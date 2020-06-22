@@ -47,3 +47,38 @@ uint64_t swap_u64(char endian, uint64_t x)
     else
         return (x);
 }
+
+int check_overflow_wo_error(t_nm *data, void *ptr)
+{
+    if ((ptr > data->raw_data + data->buffer.st_size) || (ptr < data->raw_data))
+        return (1);
+    return (0);
+}
+
+char *ft_strdup_overflow(t_nm *data, char *src, char end_char, int *failed)
+{
+    size_t size;
+    size_t i;
+    char *str;
+
+    i = 0;
+    size = 0;
+    while (!check_overflow_wo_error(data, src + size) && src[size] && src[size] != end_char && ft_isprint(src[size]))
+        size++;
+    if (check_overflow_wo_error(data, src + size))
+    {
+        *failed = 1;
+        return (ft_strdup("bad string index"));
+    }
+    if ((str = (char *)malloc(sizeof(*str) * (size + 1 + 1))) == NULL)
+        return (NULL);
+    while (i < size)
+    {
+        str[i] = src[i];
+        i++;
+    }
+    if (src[size] == end_char)
+        str[i++] = end_char;
+    str[i] = 0;
+    return (str);
+}
