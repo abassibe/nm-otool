@@ -25,11 +25,15 @@
 #include <stdio.h>
 #include <sys/mman.h>
 
-typedef struct s_debug_symbol
-{
-    char *symbol;
-    uint16_t typevalue;
-} t_debug_symbol;
+typedef union u_header {
+    struct mach_header *mh;
+    struct mach_header_64 *mh_64;
+} t_header;
+
+typedef union u_segment_command {
+    struct segment_command *sc;
+    struct segment_command_64 *sc_64;
+} t_segment_command;
 
 typedef struct s_nm
 {
@@ -38,13 +42,14 @@ typedef struct s_nm
     struct stat buffer;
     char is_64;
     char is_endianess;
+    uint32_t header_size;
+    uint32_t sc_size;
+    uint32_t nlist_size;
     uint64_t nsects;
     t_list *sects;
     t_list *syms;
-    struct mach_header *mh;
-    struct mach_header_64 *mh_64;
-    struct segment_command *sc;
-    struct segment_command_64 *sc_64;
+    t_header header;
+    t_segment_command *sc;
     struct load_command *lc;
 } t_nm;
 
@@ -65,16 +70,16 @@ typedef struct s_section
     uint32_t offset;
 } t_section;
 
-typedef struct s_mysect
+typedef struct s_my_sect
 {
     char *name;
     uint64_t index;
     uint64_t addr;
     uint64_t size;
     uint32_t offset;
-} t_mysect;
+} t_my_sect;
 
-typedef struct s_mysym
+typedef struct s_my_sym
 {
     char *name;
     int namefailed;
@@ -84,7 +89,25 @@ typedef struct s_mysym
     uint16_t desc;
     uint64_t value;
     char *debug_symbol;
-} t_mysym;
+} t_my_sym;
+
+typedef struct s_debug_symbol
+{
+    char *symbol;
+    uint16_t typevalue;
+} t_debug_symbol;
+
+typedef struct s_my_symbol
+{
+    char *name;
+    int namefailed;
+    uint8_t type;
+    char type_p;
+    uint8_t sect;
+    uint16_t desc;
+    uint64_t value;
+    char *debug_symbol;
+} t_my_symbol;
 
 int is_overflow(t_nm *data, void *ptr);
 int ft_error(char *error);
@@ -93,5 +116,13 @@ uint64_t swap_u64(char endian, uint64_t x);
 char *ft_strdup_overflow(t_nm *data, char *src, char end_char, int *failed);
 
 int macho_file(t_nm *data);
+int macho_segment(t_nm *data);
+t_list *create_mysym(t_nm *data, char *strtab, void *sym);
+
+char *get_debug_symbol(uint16_t type);
+
+void print_symbols(t_nm *data);
+
+void ft_lstsort(t_list *lst);
 
 #endif

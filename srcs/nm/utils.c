@@ -25,9 +25,9 @@ int ft_error(char *error)
     return (-1);
 }
 
-uint32_t swap_u32(char endian, uint32_t x)
+uint32_t swap_u32(char swap, uint32_t x)
 {
-    if (endian)
+    if (swap)
     {
         x = ((x << 8) & 0xFF00FF00) | ((x >> 8) & 0xFF00FF);
         return ((x << 16) | (x >> 16));
@@ -36,9 +36,9 @@ uint32_t swap_u32(char endian, uint32_t x)
         return (x);
 }
 
-uint64_t swap_u64(char endian, uint64_t x)
+uint64_t swap_u64(char swap, uint64_t x)
 {
-    if (endian)
+    if (swap)
     {
         x = ((x << 8) & 0xFF00FF00FF00FF00ULL) | ((x >> 8) & 0x00FF00FF00FF00FFULL);
         x = ((x << 16) & 0xFFFF0000FFFF0000ULL) | ((x >> 16) & 0x0000FFFF0000FFFFULL);
