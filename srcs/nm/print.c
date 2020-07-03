@@ -27,7 +27,6 @@ void print_symbols(t_nm *data)
 {
     t_list *symlst;
     t_my_symbol *sym;
-    int reverse;
 
     symlst = data->syms;
     ft_lstsort(symlst);

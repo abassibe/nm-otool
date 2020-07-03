@@ -12,7 +12,7 @@
 
 #include "../../includes/ft_nm.h"
 
-int parse_macho_symtab(t_nm *data, struct symtab_command *stc)
+int parse_macho_symtab(t_nm *data, t_symtab_command *stc)
 {
 	void *sym;
 	void *strtab;
@@ -42,13 +42,13 @@ static int parse_lc_error(t_nm *data)
 	void *end_cmds;
 
 	cmd_size = data->lc->cmdsize;
-	end_cmds = (struct load_command *)(data->raw_data + data->header_size) + swap_u32(data->is_endianess, ((struct mach_header *)(data->raw_data))->sizeofcmds);
+	end_cmds = (t_load_command *)(data->raw_data + data->header_size) + swap_u32(data->is_endianess, ((t_mach_header *)(data->raw_data))->sizeofcmds);
 	if ((void *)data->lc + (cmd_size || 1) > end_cmds)
 		return (-1);
 	return (1);
 }
 
-static int parse_lc(t_nm *data, int i)
+static int parse_lc(t_nm *data)
 {
 	uint32_t cmd;
 
@@ -65,18 +65,19 @@ static int parse_lc(t_nm *data, int i)
 int macho_file(t_nm *data)
 {
 	uint32_t ncmds;
-	int i;
+	uint32_t i;
 
 	i = 0;
-	data->lc = (struct load_command *)(data->raw_data + data->header_size);
+	data->lc = (t_load_command *)(data->raw_data + data->header_size);
 	if (is_overflow(data, data->lc))
 		return (ft_error("Error while parsing file."));
-	ncmds = swap_u32(data->is_endianess, ((struct mach_header *)(data->raw_data))->ncmds);
+	ncmds = swap_u32(data->is_endianess, ((t_mach_header *)(data->raw_data))->ncmds);
 	while (i < ncmds)
 	{
-		if (is_overflow(data, data->lc + 1) || parse_lc(data, i++) == -1)
+		if (is_overflow(data, data->lc + 1) || parse_lc(data) == -1)
 			return (ft_error("Error while parsing file."));
 		data->lc = (void *)data->lc + swap_u32(data->is_endianess, data->lc->cmdsize);
+		i++;
 	}
 	return (1);
 }

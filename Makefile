@@ -5,54 +5,50 @@
 #                                                     +:+ +:+         +:+      #
 #    By: abassibe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/10 12:45:46 by abassibe          #+#    #+#              #
-#    Updated: 2020/02/27 05:43:28 by abassibe         ###   ########.fr        #
+#    Created: 2019/11/09 05:21:00 by abassibe          #+#    #+#              #
+#    Updated: 2020/07/01 09:12:59 by abassibe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ifeq ($(HOSTTYPE),)
-		HOSTTYPE := $(shell uname -m)_$(shell uname -s)
-endif
+NAME = ft_nm
 
-NAME = libft_malloc_$(HOSTTYPE).so
-
-SRCS =	malloc.c \
-		free.c \
-		realloc.c \
-		calloc.c \
-		first_allocation.c \
-		new_allocation.c \
-		show_alloc_mem.c \
-		malloc_dump.c \
-		utils.c \
-		print.c
+SRCS =	ft_nm.c \
+		macho.c \
+		macho_seg.c \
+		macho_sym.c \
+		debug.c \
+		lst_sort.c \
+		print.c \
+		archive.c \
+		utils.c
 
 OBJS = $(SRCS:.c=.o)
 
-SRCPATH = ./srcs/
+SRCPATH = ./srcs/nm/
 
 FLAGS = -Wall -Wextra -Werror
 
-.PHONY: all clean fclean re
-
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@make -C libft
-	@gcc -shared -fPIC $(FLAGS) $(OBJS) libft/libft.a -o $(NAME)
-	@ln -sf $(NAME) libft_malloc.so
+$(NAME): libft.a $(OBJS) $(addprefix $(SRCPATH), $(SRCS))
+	@gcc $(FLAGS) $(OBJS) -L. -lft -o $(NAME)
+
+libft.a:
+	@make -C libft/
+	@mv libft/libft.a .
+	@make clean -C libft/
 
 %.o: $(SRCPATH)%.c
-	@gcc $(FLAGS) -o $@ -c $< -I includes
+	@gcc $(FLAGS) -c $< -I includes
 
 .PHONY: all clean fclean re
 
 clean:
-	@make -C libft clean
-	@rm -rf $(OBJS)
+	@rm -f $(OBJS)
+	@rm -f libft.a
 
 fclean: clean
-	@make -C libft fclean
-	@rm -rf libft/libft.a $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
+

@@ -30,16 +30,17 @@ typedef union u_header {
     struct mach_header_64 *mh_64;
 } t_header;
 
-typedef union u_segment_command {
+typedef union u_seg_command {
     struct segment_command *sc;
     struct segment_command_64 *sc_64;
-} t_segment_command;
+} t_seg_command;
 
 typedef struct s_nm
 {
     char *path;
     void *raw_data;
-    struct stat buffer;
+    uint32_t size;
+    char *file_name;
     char is_64;
     char is_endianess;
     uint32_t header_size;
@@ -49,7 +50,7 @@ typedef struct s_nm
     t_list *sects;
     t_list *syms;
     t_header header;
-    t_segment_command *sc;
+    t_seg_command *sc;
     struct load_command *lc;
 } t_nm;
 
@@ -109,6 +110,15 @@ typedef struct s_my_symbol
     char *debug_symbol;
 } t_my_symbol;
 
+typedef struct mach_header_64 t_mach_header_64;
+typedef struct mach_header t_mach_header;
+typedef struct segment_command_64 t_segment_command_64;
+typedef struct segment_command t_segment_command;
+typedef struct nlist_64 t_nlist_64;
+typedef struct nlist t_nlist;
+typedef struct load_command t_load_command;
+typedef struct symtab_command t_symtab_command;
+
 int is_overflow(t_nm *data, void *ptr);
 int ft_error(char *error);
 uint32_t swap_u32(char endian, uint32_t x);
@@ -124,5 +134,8 @@ char *get_debug_symbol(uint16_t type);
 void print_symbols(t_nm *data);
 
 void ft_lstsort(t_list *lst);
+
+int archive(t_nm *data);
+int init_data(t_nm *data);
 
 #endif

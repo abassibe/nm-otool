@@ -7,6 +7,7 @@ static int sort_by_name(t_list *lst1, t_list *lst2)
 
     if (!lst1 || !lst2 || !lst1->content || !lst2->content)
         return (0);
+
     sym1 = lst1->content;
     sym2 = lst2->content;
     if (!ft_strcmp(sym1->name, sym2->name))

@@ -69,17 +69,17 @@ t_my_sym *init_my_sym(t_nm *data,
         return (NULL);
     if (!data->is_64)
     {
-        my_sym->type = ((struct nlist *)sym)->n_type;
-        my_sym->sect = ((struct nlist *)sym)->n_sect;
-        my_sym->desc = ((struct nlist *)sym)->n_desc;
-        my_sym->value = swap_u32(data->is_endianess, ((struct nlist *)sym)->n_value);
+        my_sym->type = ((t_nlist *)sym)->n_type;
+        my_sym->sect = ((t_nlist *)sym)->n_sect;
+        my_sym->desc = ((t_nlist *)sym)->n_desc;
+        my_sym->value = swap_u32(data->is_endianess, ((t_nlist *)sym)->n_value);
     }
     else
     {
-        my_sym->type = ((struct nlist_64 *)sym)->n_type;
-        my_sym->sect = ((struct nlist_64 *)sym)->n_sect;
-        my_sym->desc = ((struct nlist_64 *)sym)->n_desc;
-        my_sym->value = swap_u32(data->is_endianess, ((struct nlist_64 *)sym)->n_value);
+        my_sym->type = ((t_nlist_64 *)sym)->n_type;
+        my_sym->sect = ((t_nlist_64 *)sym)->n_sect;
+        my_sym->desc = ((t_nlist_64 *)sym)->n_desc;
+        my_sym->value = swap_u32(data->is_endianess, ((t_nlist_64 *)sym)->n_value);
     }
     return (my_sym);
 }
@@ -90,10 +90,12 @@ t_list *create_mysym(t_nm *data, char *strtab, void *sym)
     char *symname;
 
     symname = strtab + swap_u32(data->is_endianess, (data->is_endianess)
-                                                        ? ((struct nlist_64 *)sym)->n_un.n_strx
-                                                        : ((struct nlist *)sym)->n_un.n_strx);
-    if (!(init_my_sym(data, &my_sym, symname, (struct nlist *)sym)))
+                                                        ? ((t_nlist_64 *)sym)->n_un.n_strx
+                                                        : ((t_nlist *)sym)->n_un.n_strx);
+    if (!(init_my_sym(data, &my_sym, symname, (t_nlist *)sym)))
         return (NULL);
     fill_mysym(data, &my_sym);
-    return (ft_lstnew(&my_sym, sizeof(t_my_sym)));
+    t_list *to_replace = ft_lstnew(&my_sym, sizeof(t_my_sym));
+    to_replace->next = NULL;
+    return (to_replace);
 }

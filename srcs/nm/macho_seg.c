@@ -18,10 +18,10 @@ int macho_segment_init(t_nm *data, void **section, uint32_t *nsects)
     *section = data->lc + data->sc_size;
     if (is_overflow(data, *section))
         return (-1);
-    *nsects = (data->is_64) ? ((struct segment_command_64 *)
+    *nsects = (data->is_64) ? ((t_segment_command_64 *)
                                    data->lc)
                                   ->nsects
-                            : ((struct segment_command *)data->lc)->nsects;
+                            : ((t_segment_command *)data->lc)->nsects;
     *nsects = swap_u32(data->is_endianess, *nsects);
     return (1);
 }

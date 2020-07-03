@@ -14,7 +14,7 @@
 
 int is_overflow(t_nm *data, void *ptr)
 {
-    if ((ptr > data->raw_data + data->buffer.st_size) || (ptr < data->raw_data))
+    if ((ptr > data->raw_data + data->size) || (ptr < data->raw_data))
         return (1);
     return (0);
 }
@@ -50,7 +50,7 @@ uint64_t swap_u64(char swap, uint64_t x)
 
 int check_overflow_wo_error(t_nm *data, void *ptr)
 {
-    if ((ptr > data->raw_data + data->buffer.st_size) || (ptr < data->raw_data))
+    if ((ptr > data->raw_data + data->size) || (ptr < data->raw_data))
         return (1);
     return (0);
 }
