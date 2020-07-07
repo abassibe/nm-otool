@@ -79,7 +79,7 @@ t_my_sym *init_my_sym(t_nm *data,
         my_sym->type = ((t_nlist_64 *)sym)->n_type;
         my_sym->sect = ((t_nlist_64 *)sym)->n_sect;
         my_sym->desc = ((t_nlist_64 *)sym)->n_desc;
-        my_sym->value = swap_u32(data->is_endianess, ((t_nlist_64 *)sym)->n_value);
+        my_sym->value = swap_u64(data->is_endianess, ((t_nlist_64 *)sym)->n_value);
     }
     return (my_sym);
 }
@@ -89,7 +89,7 @@ t_list *create_mysym(t_nm *data, char *strtab, void *sym)
     t_my_sym my_sym;
     char *symname;
 
-    symname = strtab + swap_u32(data->is_endianess, (data->is_endianess)
+    symname = strtab + swap_u32(data->is_endianess, (data->is_64)
                                                         ? ((t_nlist_64 *)sym)->n_un.n_strx
                                                         : ((t_nlist *)sym)->n_un.n_strx);
     if (!(init_my_sym(data, &my_sym, symname, (t_nlist *)sym)))
