@@ -33,10 +33,7 @@ static void match_sym_section(t_list *mysect_lst, t_my_sym *my_sym)
 void fill_mysym(t_nm *data, t_my_sym *my_sym)
 {
     if (N_STAB & my_sym->type)
-    {
         my_sym->type_p = '-';
-        my_sym->debug_symbol = get_debug_symbol(my_sym->type);
-    }
     else if ((N_TYPE & my_sym->type) == N_UNDF)
     {
         if (my_sym->namefailed)

@@ -76,14 +76,14 @@ int main(int ac, char **av)
     int i;
 
     i = 0;
-    if (ac < 2 && get_args(&data, "a.out"))
+    if (ac < 2 && get_args(&data, "a.out") == 1)
     {
         if (init_data(&data) == -1)
             return (-1);
     }
     while (++i < ac)
     {
-        if (!get_args(&data, av[i]))
+        if (get_args(&data, av[i]) == -1)
             continue;
         if (init_data(&data) == -1)
             return (-1);

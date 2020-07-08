@@ -16,7 +16,6 @@ SRCS =	ft_nm.c \
 		macho.c \
 		macho_seg.c \
 		macho_sym.c \
-		debug.c \
 		lst_sort.c \
 		print.c \
 		archive.c \
@@ -28,25 +27,28 @@ OBJS = $(SRCS:.c=.o)
 
 SRCPATH = ./srcs/nm/
 
+OBJSPATH = ./objs/
+
 FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): libft.a $(OBJS) $(addprefix $(SRCPATH), $(SRCS))
-	@gcc $(FLAGS) $(OBJS) -L. -lft -o $(NAME)
+$(NAME): libft.a $(addprefix objs/, $(OBJS))
+	@gcc $(FLAGS) $(addprefix objs/, $(OBJS)) -L. -lft -o $(NAME)
+
+$(OBJSPATH)%.o: $(SRCPATH)%.c
+	@mkdir -p objs
+	@gcc $(FLAGS) -c $< -o $@ -I includes
 
 libft.a:
 	@make -C libft/
 	@mv libft/libft.a .
 	@make clean -C libft/
 
-%.o: $(SRCPATH)%.c
-	@gcc $(FLAGS) -c $< -I includes
-
 .PHONY: all clean fclean re
 
 clean:
-	@rm -f $(OBJS)
+	@rm -rf $(OBJSPATH)
 	@rm -f libft.a
 
 fclean: clean

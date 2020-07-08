@@ -89,7 +89,6 @@ typedef struct s_my_sym
     uint8_t sect;
     uint16_t desc;
     uint64_t value;
-    char *debug_symbol;
 } t_my_sym;
 
 typedef struct s_debug_symbol
@@ -131,8 +130,6 @@ char *ft_strdup_overflow(t_nm *data, char *src, char end_char, int *failed);
 int macho_file(t_nm *data);
 int macho_segment(t_nm *data);
 t_list *create_mysym(t_nm *data, char *strtab, void *sym);
-
-char *get_debug_symbol(uint16_t type);
 
 void print_symbols(t_nm *data);
 
