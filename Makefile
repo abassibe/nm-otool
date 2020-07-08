@@ -6,7 +6,7 @@
 #    By: abassibe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/09 05:21:00 by abassibe          #+#    #+#              #
-#    Updated: 2020/07/01 09:12:59 by abassibe         ###   ########.fr        #
+#    Updated: 2020/07/08 11:04:55 by abassibe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRCS =	ft_nm.c \
 		lst_sort.c \
 		print.c \
 		archive.c \
+		fat.c \
+		bit_swap.c \
 		utils.c
 
 OBJS = $(SRCS:.c=.o)

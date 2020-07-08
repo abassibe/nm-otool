@@ -123,6 +123,9 @@ int is_overflow(t_nm *data, void *ptr);
 int ft_error(char *error);
 uint32_t swap_u32(char endian, uint32_t x);
 uint64_t swap_u64(char endian, uint64_t x);
+int32_t bswap_int32(int32_t x);
+uint32_t bswap_uint32(uint32_t x);
+uint64_t bswap_uint64(uint64_t x);
 char *ft_strdup_overflow(t_nm *data, char *src, char end_char, int *failed);
 
 int macho_file(t_nm *data);
@@ -137,5 +140,7 @@ void ft_lstsort(t_list *lst);
 
 int archive(t_nm *data);
 int init_data(t_nm *data);
+
+int fat(t_nm *data);
 
 #endif

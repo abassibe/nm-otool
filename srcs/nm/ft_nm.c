@@ -60,7 +60,13 @@ int init_data(t_nm *data)
     }
     else if (!ft_strncmp(data->raw_data, ARMAG, SARMAG))
         return (archive(data));
-
+    else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
+    {
+        data->is_endianess = magic == FAT_CIGAM ? 1 : 0;
+        return (fat(data));
+    }
+    else
+        ft_printf("%s The file was not recognized as a valid object file\n", data->path);
     return (0);
 }
 
