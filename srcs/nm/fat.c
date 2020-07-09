@@ -41,8 +41,8 @@ static int fat_section(t_nm *data, struct fat_arch *fat, unsigned long nfat_arch
     ret = 0;
     while (i < nfat_arch)
     {
-        if (parse_fat(data, fat))
-            return (-1);
+        if (parse_fat(data, fat) == -1)
+            return (ft_error("Error while parsing file."));
         fat = (void *)fat + sizeof(struct fat_arch);
         i++;
     }
@@ -57,7 +57,7 @@ int fat(t_nm *data)
     nfat_arch = ((struct fat_header *)data->raw_data)->nfat_arch;
     nfat_arch = swap_u32(data->is_endianess, nfat_arch);
     if (is_overflow(data, data->raw_data + sizeof(struct fat_header)))
-        return (-1);
+        return (ft_error("Error while parsing file."));
     fat = data->raw_data + sizeof(struct fat_header);
     return (fat_section(data, fat, nfat_arch));
 }

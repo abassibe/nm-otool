@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NM_H
-#define NM_H
+#ifndef FT_NM_H
+#define FT_NM_H
 
 #include "libft.h"
 #include <mach-o/loader.h>
@@ -52,6 +52,7 @@ typedef struct s_nm
     t_header header;
     t_seg_command *sc;
     struct load_command *lc;
+    int otool;
 } t_nm;
 
 typedef struct s_symlist
@@ -132,6 +133,7 @@ int macho_segment(t_nm *data);
 t_list *create_mysym(t_nm *data, char *strtab, void *sym);
 
 void print_symbols(t_nm *data);
+void ft_hexdump(t_nm *data, void *start, int64_t size, int64_t start_address);
 
 void ft_lstsort(t_list *lst);
 

@@ -57,7 +57,7 @@ static int parse_lc(t_nm *data)
 		return (-1);
 	if (cmd == LC_SEGMENT || cmd == LC_SEGMENT_64)
 		return (macho_segment(data));
-	else if (cmd == LC_SYMTAB)
+	else if (!data->otool && cmd == LC_SYMTAB)
 		return (parse_macho_symtab(data, (void *)data->lc));
 	return (1);
 }
@@ -68,16 +68,20 @@ int macho_file(t_nm *data)
 	uint32_t i;
 
 	i = 0;
+	if (data->otool)
+		ft_printf("%s:\n", data->path);
 	data->lc = (t_load_command *)(data->raw_data + data->header_size);
 	if (is_overflow(data, data->lc))
-		return (ft_error("Error while parsing file."));
+		return (-1);
 	ncmds = swap_u32(data->is_endianess, ((t_mach_header *)(data->raw_data))->ncmds);
 	while (i < ncmds)
 	{
 		if (is_overflow(data, data->lc + 1) || parse_lc(data) == -1)
-			return (ft_error("Error while parsing file."));
+			return (-1);
 		data->lc = (void *)data->lc + swap_u32(data->is_endianess, data->lc->cmdsize);
 		i++;
 	}
+	if (!data->otool)
+		print_symbols(data);
 	return (1);
 }

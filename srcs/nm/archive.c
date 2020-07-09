@@ -17,7 +17,7 @@ int parse_archive(t_nm *data, struct ar_hdr *ar_header, uint64_t ar_size)
     tmp.size = ar_size - sizeof(ar_header);
     tmp.file_name = data->file_name;
     tmp.raw_data = ptr + name_size;
-    printf("\n%s(%s):\n", data->path, ptr);
+    ft_printf("\n%s(%s):\n", data->path, ptr);
     init_data(&tmp);
     return (0);
 }
@@ -37,11 +37,11 @@ int archive(t_nm *data)
         ptr += sizeof(struct ar_hdr);
         ar_size = ft_atoi(ar_header->ar_size);
         if (is_overflow(data, ptr) || ar_size == 0 || is_overflow(data, ptr + ar_size))
-            return (-1);
+            return (ft_error("Error while parsing file."));
         if (i++)
         {
             if (parse_archive(data, ar_header, ar_size) == -1)
-                return (-1);
+                return (ft_error("Error while parsing file."));
         }
         ptr += ar_size;
     }

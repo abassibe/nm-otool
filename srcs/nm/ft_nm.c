@@ -55,8 +55,7 @@ int init_data(t_nm *data)
         data->sc_size = data->is_64 ? sizeof(t_segment_command_64) : sizeof(t_segment_command);
         data->nlist_size = data->is_64 ? sizeof(t_nlist_64) : sizeof(t_nlist);
         if (macho_file(data) == -1)
-            return (-1);
-        print_symbols(data);
+            return (ft_error("Error while parsing file."));
     }
     else if (!ft_strncmp(data->raw_data, ARMAG, SARMAG))
         return (archive(data));

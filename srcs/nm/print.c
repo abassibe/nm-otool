@@ -28,3 +28,45 @@ void print_symbols(t_nm *data)
         symlst = symlst->next;
     }
 }
+
+void ft_hexdump_line_values(t_nm *data, char *start, int64_t len)
+{
+    int64_t i;
+
+    i = 0;
+    while (i < len)
+    {
+        if (data->is_endianess)
+        {
+            if (i + 3 - 2 * (i % 4) < len)
+            {
+                ft_printf("%02x", (uint8_t)start[i + 3 - 2 * (i % 4)]);
+                if (i % 4 == 3 && data->is_64)
+                    ft_printf(" ");
+                else
+                    ft_printf(" ");
+            }
+        }
+        else
+            ft_printf("%02x ", (uint8_t)start[i]);
+        i++;
+    }
+}
+
+void ft_hexdump(t_nm *data, void *start, int64_t size,
+                int64_t start_address)
+{
+    int64_t len;
+
+    len = size > 16 ? 16 : size;
+    while (len > 0)
+    {
+        ft_printf("%0*llx%s", (data->is_64) ? 16 : 8, start_address, "\t");
+        ft_hexdump_line_values(data, start, len);
+        ft_printf("\n");
+        start += 16;
+        start_address += 16;
+        size -= 16;
+        len = size > 16 ? 16 : size;
+    }
+}
