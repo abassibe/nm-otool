@@ -53,6 +53,7 @@ typedef struct s_nm
     t_seg_command *sc;
     struct load_command *lc;
     int otool;
+    int archive;
 } t_nm;
 
 typedef struct s_symlist

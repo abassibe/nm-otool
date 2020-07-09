@@ -17,7 +17,12 @@ int parse_archive(t_nm *data, struct ar_hdr *ar_header, uint64_t ar_size)
     tmp.size = ar_size - sizeof(ar_header);
     tmp.file_name = data->file_name;
     tmp.raw_data = ptr + name_size;
-    ft_printf("\n%s(%s):\n", data->path, ptr);
+    tmp.otool = 1;
+    tmp.path = data->path;
+    tmp.archive = 1;
+    if (!data->otool)
+        ft_printf("\n");
+    ft_printf("%s(%s):\n", data->path, ptr);
     init_data(&tmp);
     return (0);
 }
@@ -31,6 +36,8 @@ int archive(t_nm *data)
 
     ptr = data->raw_data + SARMAG;
     i = 0;
+    if (data->otool)
+        ft_printf("Archive : %s\n", data->path);
     while (ptr < data->raw_data + data->size)
     {
         ar_header = (struct ar_hdr *)ptr;

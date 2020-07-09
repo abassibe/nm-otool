@@ -38,7 +38,7 @@ SRCS2 =	ft_otool.c \
 
 OBJS = $(SRCS:.c=.o)
 
-OBJS2 = $(SRCS:.c=.o)
+OBJS2 = $(SRCS2:.c=.o)
 
 SRCPATH = ./srcs/nm/
 
@@ -52,7 +52,7 @@ $(NAME): libft.a $(addprefix objs/, $(OBJS))
 	@gcc $(FLAGS) $(addprefix objs/, $(OBJS)) -L. -lft -o $(NAME)
 
 $(NAME2): libft.a $(addprefix objs/, $(OBJS2))
-	@gcc $(FLAGS) $(addprefix objs/, $(OBJS2)) -L. -lft -o $(NAME)
+	@gcc $(FLAGS) $(addprefix objs/, $(OBJS2)) -L. -lft -o $(NAME2)
 
 $(OBJSPATH)%.o: $(SRCPATH)%.c
 	@mkdir -p objs

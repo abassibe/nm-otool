@@ -68,7 +68,7 @@ int macho_file(t_nm *data)
 	uint32_t i;
 
 	i = 0;
-	if (data->otool)
+	if (data->otool && !data->archive)
 		ft_printf("%s:\n", data->path);
 	data->lc = (t_load_command *)(data->raw_data + data->header_size);
 	if (is_overflow(data, data->lc))
