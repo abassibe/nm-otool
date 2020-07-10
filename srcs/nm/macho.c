@@ -6,18 +6,18 @@
 /*   By: abassibe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 15:01:55 by abassibe          #+#    #+#             */
-/*   Updated: 2020/06/17 15:01:56 by abassibe         ###   ########.fr       */
+/*   Updated: 2020/07/10 09:39:23 by abassibe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_nm.h"
 
-int parse_macho_symtab(t_nm *data, t_symtab_command *stc)
+static int	parse_macho_symtab(t_nm *data, t_symtab_command *stc)
 {
-	void *sym;
-	void *strtab;
-	uint64_t nsyms;
-	t_list *lst;
+	void		*sym;
+	void		*strtab;
+	uint64_t	nsyms;
+	t_list		*lst;
 
 	if (is_overflow(data, stc + 1))
 		return (-1);
@@ -36,21 +36,23 @@ int parse_macho_symtab(t_nm *data, t_symtab_command *stc)
 	return (1);
 }
 
-static int parse_lc_error(t_nm *data)
+static int	parse_lc_error(t_nm *data)
 {
-	uint64_t cmd_size;
-	void *end_cmds;
+	uint64_t	cmd_size;
+	void		*end_cmds;
 
 	cmd_size = data->lc->cmdsize;
-	end_cmds = (t_load_command *)(data->raw_data + data->header_size) + swap_u32(data->is_endianess, ((t_mach_header *)(data->raw_data))->sizeofcmds);
+	end_cmds = (t_load_command *)(data->raw_data + data->header_size) +
+		swap_u32(data->is_endianess,
+				((t_mach_header *)(data->raw_data))->sizeofcmds);
 	if ((void *)data->lc + (cmd_size || 1) > end_cmds)
 		return (-1);
 	return (1);
 }
 
-static int parse_lc(t_nm *data)
+static int	parse_lc(t_nm *data)
 {
-	uint32_t cmd;
+	uint32_t	cmd;
 
 	cmd = swap_u32(data->is_endianess, data->lc->cmd);
 	if (parse_lc_error(data) == -1)
@@ -62,10 +64,11 @@ static int parse_lc(t_nm *data)
 	return (1);
 }
 
-int macho_file(t_nm *data)
+int			macho_file(t_nm *data)
 {
-	uint32_t ncmds;
-	uint32_t i;
+	uint32_t	ncmds;
+	uint32_t	i;
+
 
 	i = 0;
 	if (data->otool && !data->archive)
@@ -73,12 +76,14 @@ int macho_file(t_nm *data)
 	data->lc = (t_load_command *)(data->raw_data + data->header_size);
 	if (is_overflow(data, data->lc))
 		return (-1);
-	ncmds = swap_u32(data->is_endianess, ((t_mach_header *)(data->raw_data))->ncmds);
+	ncmds = swap_u32(data->is_endianess,
+			((t_mach_header *)(data->raw_data))->ncmds);
 	while (i < ncmds)
 	{
 		if (is_overflow(data, data->lc + 1) || parse_lc(data) == -1)
 			return (-1);
-		data->lc = (void *)data->lc + swap_u32(data->is_endianess, data->lc->cmdsize);
+		data->lc = (void *)data->lc + swap_u32(data->is_endianess,
+				data->lc->cmdsize);
 		i++;
 	}
 	if (!data->otool)
