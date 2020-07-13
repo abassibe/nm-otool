@@ -6,7 +6,7 @@
 /*   By: abassibe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 09:39:35 by abassibe          #+#    #+#             */
-/*   Updated: 2020/07/10 09:42:06 by abassibe         ###   ########.fr       */
+/*   Updated: 2020/07/13 09:24:02 by abassibe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static int		create_new_sects(t_nm *data, void *sect)
 	new_sect.name = data->is_64 ? ((struct section_64 *)sect)->sectname :
 		((struct section *)sect)->sectname;
 	new_sect.index = data->nsects;
-	// printf("%s %llu\n", new_sect.name, new_sect.index);
 	if (!(lst = ft_lstnew(&new_sect, sizeof(t_section))))
 		return (-1);
 	ft_lstadd(&data->sects, lst);
@@ -86,7 +85,7 @@ int				macho_segment(t_nm *data)
 {
 	uint32_t	nsects;
 	void		*section;
-	uint64_t 	section_size;
+	uint64_t	section_size;
 
 	if (macho_segment_init(data, &section, &nsects) == -1)
 		return (-1);

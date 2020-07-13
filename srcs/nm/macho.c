@@ -6,7 +6,7 @@
 /*   By: abassibe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 15:01:55 by abassibe          #+#    #+#             */
-/*   Updated: 2020/07/10 09:39:23 by abassibe         ###   ########.fr       */
+/*   Updated: 2020/07/13 09:22:25 by abassibe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int			macho_file(t_nm *data)
 {
 	uint32_t	ncmds;
 	uint32_t	i;
-
 
 	i = 0;
 	if (data->otool && !data->archive)

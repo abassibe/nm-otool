@@ -29,7 +29,7 @@ int		parse_archive(t_nm *data, struct ar_hdr *ar_header, uint64_t ar_size)
 	tmp.size = ar_size - sizeof(ar_header);
 	tmp.file_name = data->file_name;
 	tmp.raw_data = ptr + name_size;
-	tmp.otool = 1;
+	tmp.otool = data->otool;
 	tmp.path = data->path;
 	tmp.archive = 1;
 	if (!data->otool)

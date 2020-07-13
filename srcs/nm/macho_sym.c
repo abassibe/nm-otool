@@ -6,7 +6,7 @@
 /*   By: abassibe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 09:42:15 by abassibe          #+#    #+#             */
-/*   Updated: 2020/07/10 09:46:30 by abassibe         ###   ########.fr       */
+/*   Updated: 2020/07/13 09:23:29 by abassibe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static t_my_sect	*find_mysection(t_list *lst, uint8_t n_sect)
 {
-	int i = 0;
+	int i;
+
+	i = 0;
 	while (lst && lst->content)
 	{
 		if (((t_my_sect *)lst->content)->index == n_sect)
