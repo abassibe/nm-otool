@@ -41,6 +41,8 @@ static int	parse_fat(t_nm *data, struct fat_arch *fat)
 		tmp.size = data->is_endianess ? bswap_uint32(fat->size) : fat->size;
 		tmp.file_name = data->file_name;
 		tmp.raw_data = data->raw_data + offset;
+		tmp.otool = data->otool;
+		tmp.path = data->path;
 		return (init_data(&tmp));
 	}
 	return (0);
